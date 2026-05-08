@@ -23,6 +23,7 @@ COPY packages/app/package.json packages/app/package.json
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --filter app... --prod
 COPY --from=build /repo/packages/app/dist packages/app/dist
+COPY db/migrations /repo/db/migrations
 WORKDIR /repo/packages/app
 EXPOSE 3000
 CMD ["node", "dist/server.js"]
