@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --version)",
+      "Bash(docker --version)",
+      "Bash(pnpm install *)",
+      "Bash(docker compose *)",
+      "Bash(lsof -i :3000 -P -sTCP:LISTEN)",
+      "Bash(lsof -i :8080 -P -sTCP:LISTEN)",
+      "Bash(docker port *)",
+      "Bash(curl -s localhost:3001/healthz)",
+      "Bash(curl -sI localhost:8080)",
+      "Bash(docker stats *)"
+    ]
+  }
+}

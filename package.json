@@ -1,0 +1,14 @@
+{
+  "name": "media-scraper-node",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.24.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev:app": "pnpm --filter app dev",
+    "dev:web": "pnpm --filter web dev"
+  }
+}
