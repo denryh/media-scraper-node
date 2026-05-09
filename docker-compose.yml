@@ -65,5 +65,13 @@ services:
     depends_on:
       - app
 
+  # Local fixture server for the scraper to hit during dev + load tests.
+  # Not constrained — we want network noise out of the picture.
+  fixture:
+    image: nginx:alpine
+    container_name: media-fixture
+    volumes:
+      - ./loadtest/fixture-server/pages:/usr/share/nginx/html:ro
+
 volumes:
   pgdata: {}

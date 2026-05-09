@@ -8,3 +8,4 @@ dist/
 .idea/
 loadtest/results/
 loadtest/*.log
+loadtest/fixture-server/pages/large.html

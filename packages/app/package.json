@@ -10,8 +10,12 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
+    "bullmq": "^5.10.4",
     "fastify": "^4.28.1",
-    "pg": "^8.12.0"
+    "htmlparser2": "^9.1.0",
+    "ioredis": "^5.4.1",
+    "pg": "^8.12.0",
+    "undici": "^6.19.5"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",

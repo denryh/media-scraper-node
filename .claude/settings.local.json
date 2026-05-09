@@ -10,7 +10,8 @@
       "Bash(docker port *)",
       "Bash(curl -s localhost:3001/healthz)",
       "Bash(curl -sI localhost:8080)",
-      "Bash(docker stats *)"
+      "Bash(docker stats *)",
+      "Bash(pnpm --filter app build)"
     ]
   }
 }
