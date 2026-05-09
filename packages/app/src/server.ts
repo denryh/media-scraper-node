@@ -5,6 +5,7 @@ import { startWorker, shutdownQueue } from './queue.js';
 import { scrapeRoutes } from './routes/scrape.js';
 import { jobRoutes } from './routes/jobs.js';
 import { mediaRoutes } from './routes/media.js';
+import { metricsRoutes } from './metrics.js';
 
 const app = Fastify({
   logger: { level: process.env.LOG_LEVEL ?? 'info' },
@@ -15,6 +16,7 @@ app.get('/healthz', async () => ({ ok: true }));
 await app.register(scrapeRoutes);
 await app.register(jobRoutes);
 await app.register(mediaRoutes);
+await app.register(metricsRoutes);
 
 const port = Number(process.env.PORT ?? 3000);
 const host = process.env.HOST ?? '0.0.0.0';

@@ -9,3 +9,4 @@ dist/
 loadtest/results/
 loadtest/*.log
 loadtest/fixture-server/pages/large.html
+loadtest/fixture-server/pages/page-*.html

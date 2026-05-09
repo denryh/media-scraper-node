@@ -39,6 +39,12 @@ services:
         limits:
           cpus: "1.0"
           memory: 1g
+    # Default Docker container fd limit is 1024 — too low for the 5000-VU
+    # burst test. Bump it; the constraint is RSS, not file descriptors.
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     environment:
       NODE_ENV: production
       NODE_OPTIONS: "--max-old-space-size=768"
