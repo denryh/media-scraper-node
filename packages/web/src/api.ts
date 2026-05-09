@@ -9,11 +9,20 @@ export type MediaItem = {
   occurrenceCount: number;
   firstSeenAt: string;
   lastSeenAt: string;
+  latestSource: string | null;
 };
 
 export type MediaPage = {
   items: MediaItem[];
   nextCursor: string | null;
+};
+
+export type MediaSource = {
+  id: string;
+  sourceUrl: string;
+  altText: string | null;
+  observedAt: string;
+  jobUrl: string;
 };
 
 export async function fetchMedia(params: {
@@ -29,6 +38,12 @@ export async function fetchMedia(params: {
   qs.set('limit', String(params.limit ?? 50));
   const r = await fetch(`${API_BASE}/media?${qs.toString()}`);
   if (!r.ok) throw new Error(`fetchMedia ${r.status}`);
+  return r.json();
+}
+
+export async function fetchSources(assetId: string): Promise<{ items: MediaSource[] }> {
+  const r = await fetch(`${API_BASE}/media/${encodeURIComponent(assetId)}/sources`);
+  if (!r.ok) throw new Error(`fetchSources ${r.status}`);
   return r.json();
 }
 

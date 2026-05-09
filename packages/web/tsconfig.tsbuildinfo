@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/vite-env.d.ts","./src/components/appshell.tsx","./src/components/badge.tsx","./src/components/emptystate.tsx","./src/components/filters.tsx","./src/components/mediagrid.tsx","./src/components/mediamodal.tsx","./src/components/mediatile.tsx","./src/components/sourcelist.tsx","./src/components/submitform.tsx","./src/lib/formatters.ts","./src/lib/queryclient.ts","./src/lib/usedebounced.ts"],"version":"5.9.3"}

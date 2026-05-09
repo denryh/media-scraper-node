@@ -14,6 +14,15 @@ const querySchema = {
 
 type Query = { type?: 'image' | 'video'; q?: string; cursor?: string; limit?: number };
 
+const sourcesParamsSchema = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['id'],
+  properties: {
+    id: { type: 'string', pattern: '^[0-9]+$' },
+  },
+} as const;
+
 const encodeCursor = (id: string | number): string =>
   Buffer.from(String(id), 'utf8').toString('base64url');
 const decodeCursor = (cursor: string): bigint | null => {
@@ -37,14 +46,24 @@ export const mediaRoutes: FastifyPluginAsync = async (app) => {
 
     // Use parameter slots; pass null when filter is not active.
     // Fetch limit+1 to know if there's another page.
+    // LATERAL pulls the most-recent source URL per asset; the
+    // (asset_id, observed_at desc) index makes it O(log n) per row.
     const sql = `
       select a.id,
              a.media_url        as "mediaUrl",
              a.media_type       as "mediaType",
              a.occurrence_count as "occurrenceCount",
              a.first_seen_at    as "firstSeenAt",
-             a.last_seen_at     as "lastSeenAt"
+             a.last_seen_at     as "lastSeenAt",
+             latest.source_url  as "latestSource"
         from media_assets a
+        left join lateral (
+          select source_url
+            from media_occurrences o
+           where o.asset_id = a.id
+           order by o.observed_at desc
+           limit 1
+        ) latest on true
        where ($1::text is null or a.media_type = $1)
          and (
            $2::text is null
@@ -65,6 +84,7 @@ export const mediaRoutes: FastifyPluginAsync = async (app) => {
       occurrenceCount: number;
       firstSeenAt: string;
       lastSeenAt: string;
+      latestSource: string | null;
     }>(sql, [type ?? null, q ?? null, cursorId?.toString() ?? null, limit + 1]);
 
     const hasMore = rows.length > limit;
@@ -73,4 +93,32 @@ export const mediaRoutes: FastifyPluginAsync = async (app) => {
 
     return { items, nextCursor };
   });
+
+  app.get<{ Params: { id: string } }>(
+    '/media/:id/sources',
+    { schema: { params: sourcesParamsSchema } },
+    async (req) => {
+      const { id } = req.params;
+      const { rows } = await pool.query<{
+        id: string;
+        sourceUrl: string;
+        altText: string | null;
+        observedAt: string;
+        jobUrl: string;
+      }>(
+        `select o.id,
+                o.source_url  as "sourceUrl",
+                o.alt_text    as "altText",
+                o.observed_at as "observedAt",
+                j.url         as "jobUrl"
+           from media_occurrences o
+           join scrape_jobs j on j.id = o.job_id
+          where o.asset_id = $1::bigint
+          order by o.observed_at desc
+          limit 100`,
+        [id],
+      );
+      return { items: rows };
+    },
+  );
 };
