@@ -28,43 +28,46 @@ export function MediaGrid({ type, q }: { type?: 'image' | 'video'; q: string }) 
 
   if (query.isLoading) {
     return (
-      <div className="flex justify-center py-16">
-        <span className="size-6 animate-spin rounded-full border-2 border-zinc-200 border-t-blue-500" />
+      <div className="flex justify-center py-24">
+        <span className="size-5 animate-spin rounded-full border-2 border-stone-200 border-t-stone-900" />
       </div>
     );
   }
   if (query.isError) {
     return (
-      <p className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-        Error: {(query.error as Error).message}
+      <p className="rounded-md border border-rose-200 bg-rose-50 px-4 py-3 font-mono text-xs text-rose-700">
+        {(query.error as Error).message}
       </p>
     );
   }
   if (items.length === 0) {
     return (
       <EmptyState
-        title={q ? 'No results match your search' : 'No media yet'}
-        hint={q ? 'Try a different query.' : 'Submit some URLs above to start scraping.'}
+        title={q ? 'No results' : 'Nothing scraped yet'}
+        hint={q ? 'Try a different query.' : 'Submit some URLs above to get started.'}
       />
     );
   }
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {items.map((m) => (
           <MediaTile key={m.id} item={m} onSelect={setSelectedId} />
         ))}
       </div>
       {query.hasNextPage && (
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center pt-6">
           <button
             type="button"
             onClick={() => query.fetchNextPage()}
             disabled={query.isFetchingNextPage}
-            className="rounded-lg border border-zinc-200 bg-white px-4 py-1.5 text-sm font-medium text-zinc-700 shadow-sm hover:bg-zinc-50 disabled:cursor-not-allowed disabled:text-zinc-400"
+            className="group inline-flex items-center gap-2 border-b border-stone-300 pb-1 font-mono text-[11px] uppercase tracking-[0.2em] text-stone-600 transition hover:border-stone-900 hover:text-stone-900 disabled:cursor-not-allowed disabled:text-stone-300"
           >
-            {query.isFetchingNextPage ? 'Loading…' : 'Load more'}
+            {query.isFetchingNextPage ? 'Loading' : 'Load more'}
+            <span aria-hidden className="transition group-enabled:group-hover:translate-y-0.5">
+              ↓
+            </span>
           </button>
         </div>
       )}

@@ -1,15 +1,14 @@
 export function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-300 bg-white/60 px-6 py-16 text-center">
-      <div className="mb-3 flex size-10 items-center justify-center rounded-full bg-zinc-100 text-zinc-500">
-        <svg viewBox="0 0 24 24" fill="none" className="size-5" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 6h16v12H4z" strokeLinejoin="round" />
-          <circle cx="9" cy="11" r="1.5" />
-          <path d="m4 16 5-5 4 4 3-3 4 4" strokeLinejoin="round" strokeLinecap="round" />
-        </svg>
+    <div className="flex flex-col items-center justify-center px-6 py-24 text-center">
+      <div
+        aria-hidden
+        className="mb-5 flex size-8 items-center justify-center border border-stone-300 text-stone-400"
+      >
+        <span className="block size-1.5 rounded-full bg-stone-300" />
       </div>
-      <p className="text-sm font-medium text-zinc-700">{title}</p>
-      {hint && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
+      <p className="text-sm font-medium text-stone-900">{title}</p>
+      {hint && <p className="mt-1.5 max-w-xs text-xs text-stone-500">{hint}</p>}
     </div>
   );
 }
