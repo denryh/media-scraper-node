@@ -55,7 +55,6 @@ export function MediaTile({
           muted
           loop
           playsInline
-          referrerPolicy="no-referrer"
           className="size-full object-cover transition duration-500 group-hover:scale-[1.04] data-[broken=true]:opacity-20"
           onError={(e) => {
             (e.currentTarget as HTMLVideoElement).dataset.broken = 'true';
